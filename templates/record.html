@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    Hi {{nick}}, I guess you're here to record some training! Enter the date for which you're recording training, and the number of
+    hours spent doing each thing.
+    <form action=set_record method=post enctype=multipart/form-data>
+      Date: <input type="date" name="date" min="2017-03-07"/><br>
+      Standing: <input type="number" name="standing" value=0 /><br>
+      Walking: <input type="number" name="walking" value=0 /><br>
+      Running: <input type="number" name="running" value=0 /><br>
+      Cycling: <input type="number" name="cycling" value=0 /><br>
+      Swimming: <input type="number" name="swimming" value=0 /><br>
+      Stretching: <input type="number" name="stretching" value=0 /><br>
+      <input type="submit" value="Submit!"/>
+    </form>
+  </body>
+</html>

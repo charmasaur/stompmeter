@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div>
+      It looks like you're {{email}}. You should probably enter a nickname:
+      <form action=set_nick method=get enctype=multipart/form-data>
+        <input name="nick" type="text" value="{{default_nick}}"/>
+        <input type="submit" value="Go"/>
+      </form>
+    </div>
+  </body>
+</html>
