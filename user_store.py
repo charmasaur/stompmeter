@@ -71,3 +71,12 @@ def save_points(user, date, points):
     day.points += points
     day.put()
     return True, day.points
+
+# Returns None if the user doesn't exist, or a list of at most max_results
+# (date, points) tuples otherwise.
+def get_recent_points(user, max_results):
+    item = _get_user_item(user)
+    if not item:
+        return None
+    days = UserTrainingDay.query(ancestor=item.key).order(-UserTrainingDay.date).fetch(max_results)
+    return [(day.date, day.points) for day in days]

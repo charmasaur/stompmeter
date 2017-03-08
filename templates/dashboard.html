@@ -2,6 +2,14 @@
 <html>
   <body>
     Welcome to the Stompmeter, {{nick}}!
+    <br><br>
+    Here are some of your recent efforts:
+    <br>
+    {% for recent in recents %}
+    {{recent['date']}}: {{recent['points']}} points
+    <br>
+    {% endfor %}
+    <br>
     <form action=record method=get enctype=multipart/form-data>
       <input type="submit" value="Record training"/>
     </form>

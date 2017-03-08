@@ -35,10 +35,19 @@ def dashboard():
     user = users.get_current_user()
     if not signed_up(user):
         return redirect('/')
+    recents = []
+    recent_stuffs = user_store.get_recent_points(user, 7)
+    if recent_stuffs:
+        for date, points in recent_stuffs:
+            recents.append({
+                'date':str(date),
+                'points':str(points)
+                })
 
     return render_template(
             "dashboard.html",
-            nick=user_store.get_nick(user))
+            nick=user_store.get_nick(user),
+            recents=recents)
 
 @app.route('/record', methods=['GET'])
 def record():
