@@ -101,7 +101,7 @@ def set_record():
                 msg="Points failed. This really shouldn't have happened.")
 
     return render_template("set_record.html",
-            msg="Today you've earned " + str(total_daily_points) +
+            msg="On " + str(date) + " you earned " + str(total_daily_points) +
                     " points, woah!")
 
 @app.route('/set_nick', methods=['GET'])
