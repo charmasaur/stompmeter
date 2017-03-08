@@ -54,12 +54,18 @@ def set_record():
     user = users.get_current_user()
     if not signed_up(user):
             return redirect('/')
-    data = request.form.to_dict()
-    if not 'date' in data or data['date'] == "":
-        return render_template("set_record_fail.html")
+    raw_data = request.form.to_dict()
 
-    if not user_store.save_data(user, data):
-        return render_template("set_record_fail.html")
+    # Need a valid date for this to work, so check that first.
+    date_string = raw_data.get("date", "")
+    if date_string == "":
+        return render_template("set_record_fail.html", msg="No date")
+    date_elements = [int(x) for x in date_string.split("-")]
+    date = datetime.date(date_elements[0], date_elements[1], date_elements[2])
+
+    # We've got a valid date, so first try to save the raw data.
+    if not user_store.save_raw_data(user, raw_data):
+        return render_template("set_record_fail.html", msg="Raw data failed")
 
     return render_template("set_record.html")
 

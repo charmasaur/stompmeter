@@ -4,8 +4,9 @@ class UserItem(ndb.Model):
     user_id = ndb.StringProperty()
     nick = ndb.StringProperty()
 
-class UserRecord(ndb.Model):
+class UserRawData(ndb.Model):
     raw_data = ndb.JsonProperty()
+    date = ndb.DateTimeProperty(auto_now_add=True)
 
 def _get_user_parent_key():
     return ndb.Key('UserParent', 'default')
@@ -41,10 +42,9 @@ def get_nick(user):
     return item.nick
 
 # Returns True iff successful
-def save_data(user, data):
+def save_raw_data(user, raw_data):
     item = _get_user_item(user)
     if not item:
         return False
-    return False
-    UserRecord(data=data, parent=item.key).put()
+    UserRawData(raw_data=raw_data, parent=item.key).put()
     return True
