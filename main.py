@@ -59,6 +59,14 @@ def record():
             "record.html",
             nick=user_store.get_nick(user))
 
+@app.route('/login', methods=['GET'])
+def login():
+    return redirect(users.CreateLoginURL('/dashboard'))
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    return redirect(users.CreateLogoutURL('/'))
+
 @app.route('/set_record', methods=['POST'])
 def set_record():
     user = users.get_current_user()
