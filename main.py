@@ -5,6 +5,7 @@ import datetime
 import hashlib
 import json
 
+import points_calculator
 import user_store
 
 app = Flask(__name__)
@@ -67,7 +68,24 @@ def set_record():
     if not user_store.save_raw_data(user, raw_data):
         return render_template("set_record_fail.html", msg="Raw data failed")
 
-    return render_template("set_record.html")
+    # That's all good, so now calculate the points and save those.
+    standing = get_float_or_zero(raw_data, "standing")
+    walking = get_float_or_zero(raw_data, "walking")
+    running = get_float_or_zero(raw_data, "running")
+    cycling = get_float_or_zero(raw_data, "cycling")
+    swimming = get_float_or_zero(raw_data, "swimming")
+    stretching = get_float_or_zero(raw_data, "stretching")
+    points = points_calculator.calculate(
+            standing, walking, running, cycling, swimming, stretching)
+
+    success, total_daily_points = user_store.save_points(user, date, points)
+    if not success:
+        return render_template("set_record_fail.html",
+                msg="Points failed. This really shouldn't have happened.")
+
+    return render_template("set_record.html",
+            msg="Today you've earned " + str(total_daily_points) +
+                    " points, woah!")
 
 @app.route('/set_nick', methods=['GET'])
 def set_nick():
@@ -83,3 +101,9 @@ def signed_up(user):
     if user_store.get_nick(user):
         return True
     return False
+
+def get_float_or_zero(raw_data, key):
+    res = raw_data.get(key, "")
+    if res == "":
+        return 0
+    return float(res)

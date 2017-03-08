@@ -8,6 +8,10 @@ class UserRawData(ndb.Model):
     raw_data = ndb.JsonProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
 
+class UserTrainingDay(ndb.Model):
+    date = ndb.DateProperty()
+    points = ndb.FloatProperty()
+
 def _get_user_parent_key():
     return ndb.Key('UserParent', 'default')
 
@@ -48,3 +52,22 @@ def save_raw_data(user, raw_data):
         return False
     UserRawData(raw_data=raw_data, parent=item.key).put()
     return True
+
+# Returns (True, daily points) if successful, (False, 0) otherwise
+def save_points(user, date, points):
+    item = _get_user_item(user)
+    if not item:
+        return False
+    existing = UserTrainingDay.query(
+            filters=UserTrainingDay.date == date,
+            ancestor=item.key).fetch()
+    if len(existing) > 1:
+        raise Exception("Duplicate training record for the same user and day!")
+    elif len(existing) == 1:
+        day = existing[0]
+    else:
+        day = UserTrainingDay(date=date, parent=item.key)
+        day.points = 0
+    day.points += points
+    day.put()
+    return True, day.points
