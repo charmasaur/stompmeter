@@ -2,8 +2,8 @@
 <html>
   <body>
     Hi {{nick}}, I guess you're here to record some training! Enter the date for which you're recording training, and the number of
-    hours spent doing each thing. Note that what you enter here will add to anything you've previously submitted for the day, not
-    replace it!
+    hours spent doing each thing. Note that points from the session you enter here will add to what you've previously submitted for
+    the day, not replace it*!
     <form action=set_record method=post enctype=multipart/form-data>
       Date: <input type="date" name="date" min="2017-03-07"/><br>
       Standing: <input type="number" name="standing" step=0.1 value=0 /><br>
@@ -14,5 +14,8 @@
       Stretching: <input type="number" name="stretching" step=0.1 value=0 /><br>
       <input type="submit" value="Submit!"/>
     </form>
+    <br><br>
+    *But individual durations for each activity won't add. For example, if you submit 1 hour of standing and 0 hours of cycling,
+    then submit 1 hour of cycling and 0 hours of standing, you won't get any points at all :(
   </body>
 </html>
