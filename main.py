@@ -37,17 +37,28 @@ def dashboard():
         return redirect('/')
     recents = []
     recent_stuffs = user_store.get_recent_points(user, 7)
+    today_date = datetime.date.today()
+    # if we're on the nth day of the week (n=0 is Monday), the Monday of the
+    # week was n days ago...
+    week_start_date = today_date - datetime.timedelta(today_date.weekday())
+    # ... and the Sunday on which this week will end is 6 days later.
+    week_end_date = week_start_date + datetime.timedelta(6)
+    week_points = 0
     if recent_stuffs:
         for date, points in recent_stuffs:
             recents.append({
                 'date':str(date),
                 'points':str(points)
                 })
+            if date >= week_start_date and date < week_end_date:
+                week_points += points
 
     return render_template(
             "dashboard.html",
             nick=user_store.get_nick(user),
-            recents=recents)
+            recents=recents,
+            week_end_date=str(week_end_date),
+            week_points=str(week_points))
 
 @app.route('/record', methods=['GET'])
 def record():
