@@ -15,6 +15,29 @@
     <br>
     {% endfor %}
     <br>
+    And finally, the standings:
+    <table>
+      <tr>
+        <th></th>
+        {% for nick in nicks %}
+        <th>{{nick}}</th>
+        {% endfor %}
+      </tr>
+      <!--<tr>
+        <th>Glowsticks</th>
+        {% for glowstick in glowsticks %}
+        <th>{{glowstick}}</th>
+        {% endfor %}
+      </tr>-->
+      {% for week in weeks %}
+      <tr>
+        <td>{{week['date']}}</td>
+        {% for point in week['points'] %}
+        <td>{{point}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
     <form action=signup method=get enctype=multipart/form-data>
       <input type="submit" value="Change nickname"/>
     </form>

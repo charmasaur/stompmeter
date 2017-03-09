@@ -53,12 +53,24 @@ def dashboard():
             if date >= week_start_date and date < week_end_date:
                 week_points += points
 
+    scoreboard = user_store.get_scoreboard()
+    nicks = []
+    #glowsticks = []
+    weeks = []
+    for nick in scoreboard:
+        nicks.append(nick)
+        # TODO: Fix this
+        for week_end_date in reversed(sorted(scoreboard[nick])):
+
     return render_template(
             "dashboard.html",
             nick=user_store.get_nick(user),
             recents=recents,
             week_end_date=str(week_end_date),
-            week_points=str(week_points))
+            week_points=str(week_points),
+            nicks=["Tom", "Romp"],
+            #glowsticks=["2", "3"],
+            weeks=[{"date":"2017-04-03", "points":["4", "80"]}])
 
 @app.route('/record', methods=['GET'])
 def record():
