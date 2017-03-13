@@ -82,6 +82,10 @@ def record():
             "record.html",
             nick=user_store.get_nick(user))
 
+@app.route('/admin', methods=['GET'])
+def admin():
+    return render_template("admin.html")
+
 @app.route('/login', methods=['GET'])
 def login():
     return redirect(users.CreateLoginURL('/dashboard'))
@@ -98,11 +102,9 @@ def set_record():
     raw_data = request.form.to_dict()
 
     # Need a valid date for this to work, so check that first.
-    date_string = raw_data.get("date", "")
-    if date_string == "":
+    date = extract_date(raw_data.get("date", ""))
+    if not date:
         return render_template("set_record_fail.html", msg="No date")
-    date_elements = [int(x) for x in date_string.split("-")]
-    date = datetime.date(date_elements[0], date_elements[1], date_elements[2])
 
     # We've got a valid date, so first try to save the raw data.
     if not user_store.save_raw_data(user, raw_data):
@@ -127,6 +129,19 @@ def set_record():
             msg="On " + str(date) + " you earned " + str(total_daily_points) +
                     " points, woah!")
 
+@app.route('/set_admin', methods=['POST'])
+def set_admin():
+    # Need a valid date for this to work, so check that first.
+    date = extract_date(request.form.get("date", ""))
+    if not date:
+        return "Snapshot failed: bad date"
+
+    if not date.weekday() == 6:
+        return "Snapshot failed: must snapshot a Sunday"
+
+    user_store.snapshot_week_scores(date)
+    return "Snapshot succeeded for week: " + str(date)
+
 @app.route('/set_nick', methods=['GET'])
 def set_nick():
     user = users.get_current_user()
@@ -136,6 +151,12 @@ def set_nick():
 
     user_store.set_nick(user, nick)
     return redirect('dashboard')
+
+def extract_date(form_entry):
+    if form_entry == "":
+        return None
+    date_elements = [int(x) for x in form_entry.split("-")]
+    return datetime.date(date_elements[0], date_elements[1], date_elements[2])
 
 def signed_up(user):
     if user_store.get_nick(user):

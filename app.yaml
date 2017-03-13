@@ -7,6 +7,9 @@ handlers:
   script: main.app
 - url: /login
   script: main.app
+- url: /admin
+  script: main.app
+  login: admin
 - url: /.*
   script: main.app
   login: required
