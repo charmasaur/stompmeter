@@ -1,0 +1,4 @@
+cron:
+- description: "weekly snapshot"
+  url: /snapshot_yesterday
+  schedule: every monday 23:00
