@@ -83,10 +83,11 @@ def dashboard():
         weeks.append({"date":str(week_end_date), "points":points})
 
     # Set emphasis on the glowsticks
-    winning_glowsticks = max([g["v"] for g in glowsticks])
-    for d in glowsticks:
-        if d["v"] == winning_glowsticks:
-            d["e"] = True
+    if len(nicks) > 0:
+        winning_glowsticks = max([g["v"] for g in glowsticks])
+        for d in glowsticks:
+            if d["v"] == winning_glowsticks:
+                d["e"] = True
 
     return render_template(
             "dashboard.html",
