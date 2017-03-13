@@ -10,6 +10,12 @@ handlers:
 - url: /admin
   script: main.app
   login: admin
+- url: /snapshot
+  script: main.app
+  login: admin
+- url: /snapshot_today
+  script: main.app
+  login: admin
 - url: /.*
   script: main.app
   login: required

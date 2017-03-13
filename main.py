@@ -112,6 +112,14 @@ def record():
 def admin():
     return render_template("admin.html")
 
+@app.route('/snapshot_today', methods=['GET'])
+def snapshot_today():
+    return try_to_do_snapshot(datetime.date.today())
+
+@app.route('/snapshot', methods=['GET'])
+def snapshot():
+    return try_to_do_snapshot(extract_date(request.args.get("date", "")))
+
 @app.route('/login', methods=['GET'])
 def login():
     return redirect(users.CreateLoginURL('/dashboard'))
@@ -155,19 +163,6 @@ def set_record():
             msg="On " + str(date) + " you earned " + str(total_daily_points) +
                     " points, woah!")
 
-@app.route('/set_admin', methods=['POST'])
-def set_admin():
-    # Need a valid date for this to work, so check that first.
-    date = extract_date(request.form.get("date", ""))
-    if not date:
-        return "Snapshot failed: bad date"
-
-    if not date.weekday() == 6:
-        return "Snapshot failed: must snapshot a Sunday"
-
-    user_store.snapshot_week_scores(date)
-    return "Snapshot succeeded for week: " + str(date)
-
 @app.route('/set_nick', methods=['GET'])
 def set_nick():
     user = users.get_current_user()
@@ -177,6 +172,16 @@ def set_nick():
 
     user_store.set_nick(user, nick)
     return redirect('dashboard')
+
+def try_to_do_snapshot(date):
+    if not date:
+        return "Snapshot failed: bad date"
+
+    if not date.weekday() == 6:
+        return "Snapshot failed: must snapshot a Sunday"
+
+    user_store.snapshot_week_scores(date)
+    return "Snapshot succeeded for week: " + str(date)
 
 def extract_date(form_entry):
     if form_entry == "":
