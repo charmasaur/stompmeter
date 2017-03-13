@@ -42,7 +42,7 @@ def dashboard():
     # week was n days ago...
     week_start_date = today_date - datetime.timedelta(today_date.weekday())
     # ... and the Sunday on which this week will end is 6 days later.
-    week_end_date = week_start_date + datetime.timedelta(6)
+    this_week_end_date = week_start_date + datetime.timedelta(6)
     week_points = 0
     if recent_stuffs:
         for date, points in recent_stuffs:
@@ -92,7 +92,7 @@ def dashboard():
             "dashboard.html",
             nick=this_nick,
             recents=recents,
-            week_end_date=str(week_end_date),
+            week_end_date=str(this_week_end_date),
             week_points=str(week_points),
             nicks=nicks,
             glowsticks=glowsticks,
