@@ -86,24 +86,24 @@ def get_recent_points(user, max_results):
     days = UserTrainingDay.query(ancestor=item.key).order(-UserTrainingDay.date).fetch(max_results)
     return [(day.date, day.points) for day in days]
 
-# Returns a dictionary of nick to (dictionary of date to points in the week
-# ending with that date). The dictionary will only be correctly populated for
-# weeks for which snapshot_week_scores has been called.
+# Returns a list of (nick, d), where d is a dictionary of date to points in the
+# week ending with that date. The dictionary will only be correctly populated
+# for weeks for which snapshot_week_scores has been called.
 def get_scoreboard():
     training_weeks = (UserTrainingWeek
             .query(ancestor=_get_user_parent_key())
             .fetch())
     result_dict = {}
     for training_week in training_weeks:
-        nick = training_week.parent.get().nick
-        if nick in result_dict:
-            weeks_dict = result_dict[nick]
+        key = training_week.key.parent()
+        if key in result_dict:
+            weeks_dict = result_dict[key]
         else:
             weeks_dict = {}
-            result_dict.update({nick : weeks_dict})
+            result_dict.update({key : weeks_dict})
         weeks_dict.update(
                 {training_week.week_end_date : training_week.week_points})
-    return result_dict
+    return [(key.get().nick, result_dict[key]) for key in result_dict]
 
 # Takes a snapshot of all scores from the given week (up to and including the
 # specified date).
