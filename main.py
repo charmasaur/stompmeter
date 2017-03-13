@@ -60,7 +60,6 @@ def dashboard():
     glowsticks = []
     all_week_end_dates = set()
     for (nick, d) in scoreboard:
-        print(nick + "|" + this_nick + "|")
         nicks.append({"v":nick,"e":nick == this_nick})
         glowsticks.append({"v":0,"e":False})
         all_week_end_dates.update(d.keys())
