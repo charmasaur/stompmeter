@@ -105,11 +105,13 @@ def get_scoreboard():
                 {training_week.week_end_date : training_week.week_points})
     return result_dict
 
-# Takes a snapshot of all scores from the given week.
+# Takes a snapshot of all scores from the given week (up to and including the
+# specified date).
 def snapshot_week_scores(week_end_date):
+    # Map from user item key to the corresponding training week.
+    item_key_to_training_week = {}
     # First see if we've already taken a snapshot of this week. In that case we
     # want to reset then update those items rather than create new ones.
-    item_key_to_training_week = {}
     training_weeks = (UserTrainingWeek
             .query(ancestor=_get_user_parent_key())
             .filter(UserTrainingWeek.week_end_date == week_end_date)
@@ -126,7 +128,7 @@ def snapshot_week_scores(week_end_date):
             .filter(UserTrainingDay.date < week_end_date)
             .fetch())
     for training_day in training_days:
-        item_key = training_day.parent
+        item_key = training_day.key.parent()
         if item_key in item_key_to_training_week:
             training_week = item_key_to_training_week[item_key]
         else:
@@ -135,7 +137,7 @@ def snapshot_week_scores(week_end_date):
                     week_points=0,
                     parent=item_key)
             item_key_to_training_week.update({item_key : training_week})
-        training_week.points += training_day.points
+        training_week.week_points += training_day.points
 
     # Save the weeks.
     for training_week in item_key_to_training_week.values():
