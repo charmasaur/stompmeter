@@ -4,9 +4,19 @@
     td {
       text-align: center;
       border: 1px solid black;
+      padding: 5px;
     }
     table {
       border-collapse: collapse;
+    }
+    .enick {
+      border: 2px solid black;
+    }
+    .eglowstick {
+      font-weight: bold;
+    }
+    .epoint {
+      font-weight: bold;
     }
   </style>
   <body>
@@ -29,20 +39,32 @@
       <tr>
         <td></td>
         {% for nick in nicks %}
-        <td>{{nick}}</td>
+          {% if nick['e'] %}
+            <td class="enick">{{nick['v']}}</td>
+          {% else %}
+            <td>{{nick['v']}}</td>
+          {% endif %}
         {% endfor %}
       </tr>
-      <!--<tr>
-        <th>Glowsticks</th>
+      <tr>
+        <td>Victorweeks</td>
         {% for glowstick in glowsticks %}
-        <th>{{glowstick}}</th>
+          {% if glowstick['e'] %}
+            <td class="eglowstick">{{glowstick['v']}}</td>
+          {% else %}
+            <td>{{glowstick['v']}}</td>
+          {% endif %}
         {% endfor %}
-      </tr>-->
+      </tr>
       {% for week in weeks %}
       <tr>
         <td>{{week['date']}}</td>
         {% for point in week['points'] %}
-        <td>{{point}}</td>
+          {% if point['e'] %}
+            <td class="epoint">{{point['v']}}</td>
+          {% else %}
+            <td>{{point['v']}}</td>
+          {% endif %}
         {% endfor %}
       </tr>
       {% endfor %}

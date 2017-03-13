@@ -60,11 +60,33 @@ def dashboard():
     glowsticks = []
     all_week_end_dates = set()
     for (nick, d) in scoreboard:
-        nicks.append(nick)
+        print(nick + "|" + this_nick + "|")
+        nicks.append({"v":nick,"e":nick == this_nick})
+        glowsticks.append({"v":0,"e":False})
         all_week_end_dates.update(d.keys())
+
     for week_end_date in reversed(sorted(all_week_end_dates)):
-        points = [str(d.get(week_end_date, 0)) for (_, d) in scoreboard]
+        # Get the points scored by each user
+        points_num = [d.get(week_end_date, 0) for (_, d) in scoreboard]
+
+        # Convert that to strings
+        points = [{"v":str(p),"e":False} for p in points_num]
+
+        # Update the total glowsticks, and while we're there set any necessary
+        # emphasis on the points
+        winning_score = max(points_num)
+        for (i, p) in enumerate(points_num):
+            if p == winning_score:
+                glowsticks[i]["v"] += 1
+                points[i].update({"e":True})
+
         weeks.append({"date":str(week_end_date), "points":points})
+
+    # Set emphasis on the glowsticks
+    winning_glowsticks = max([g["v"] for g in glowsticks])
+    for d in glowsticks:
+        if d["v"] == winning_glowsticks:
+            d["e"] = True
 
     return render_template(
             "dashboard.html",
@@ -73,7 +95,7 @@ def dashboard():
             week_end_date=str(week_end_date),
             week_points=str(week_points),
             nicks=nicks,
-            #glowsticks=glowsticks,
+            glowsticks=glowsticks,
             weeks=weeks)
 
 @app.route('/record', methods=['GET'])
