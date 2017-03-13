@@ -117,7 +117,8 @@ def snapshot_week_scores(week_end_date):
             .filter(UserTrainingWeek.week_end_date == week_end_date)
             .fetch())
     for training_week in training_weeks:
-        item_key_to_training_week.update({training_week.parent : training_week})
+        item_key_to_training_week.update(
+                {training_week.key.parent() : training_week})
         training_week.week_points = 0
 
     # Fetch all training days in the specified week.
