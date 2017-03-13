@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+  <style>
+    td {
+      text-align: center;
+      border: 1px solid black;
+    }
+    table {
+      border-collapse: collapse;
+    }
+  </style>
   <body>
     Welcome to the Stompmeter, {{nick}}!
     <form action=record method=get enctype=multipart/form-data>
@@ -18,9 +27,9 @@
     And finally, the standings:
     <table>
       <tr>
-        <th></th>
+        <td></td>
         {% for nick in nicks %}
-        <th>{{nick}}</th>
+        <td>{{nick}}</td>
         {% endfor %}
       </tr>
       <!--<tr>
