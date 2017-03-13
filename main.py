@@ -112,9 +112,10 @@ def record():
 def admin():
     return render_template("admin.html")
 
-@app.route('/snapshot_today', methods=['GET'])
-def snapshot_today():
-    return try_to_do_snapshot(datetime.date.today())
+@app.route('/snapshot_yesterday', methods=['GET'])
+def snapshot_yesterday():
+    return try_to_do_snapshot(
+            datetime.date.today() - datetime.timedelta(1))
 
 @app.route('/snapshot', methods=['GET'])
 def snapshot():

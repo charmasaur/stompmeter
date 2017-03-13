@@ -13,7 +13,7 @@ handlers:
 - url: /snapshot
   script: main.app
   login: admin
-- url: /snapshot_today
+- url: /snapshot_yesterday
   script: main.app
   login: admin
 - url: /.*
