@@ -126,7 +126,7 @@ def snapshot_week_scores(week_end_date):
     training_days = (UserTrainingDay
             .query(ancestor=_get_user_parent_key())
             .filter(UserTrainingDay.date >= week_start_date)
-            .filter(UserTrainingDay.date < week_end_date)
+            .filter(UserTrainingDay.date <= week_end_date)
             .fetch())
     for training_day in training_days:
         item_key = training_day.key.parent()

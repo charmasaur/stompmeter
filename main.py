@@ -50,7 +50,7 @@ def dashboard():
                 'date':str(date),
                 'points':str(points)
                 })
-            if date >= week_start_date and date < this_week_end_date:
+            if date >= week_start_date and date <= this_week_end_date:
                 week_points += points
 
     this_nick = user_store.get_nick(user)
