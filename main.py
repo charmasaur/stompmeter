@@ -73,9 +73,10 @@ def dashboard():
 
         # Update the total glowsticks, and while we're there set any necessary
         # emphasis on the points
+        is_team_victorweek = points_calculator.is_team_victorweek(points_num)
         winning_score = max(points_num)
         for (i, p) in enumerate(points_num):
-            if p == winning_score:
+            if p == winning_score or is_team_victorweek:
                 glowsticks[i]["v"] += 1
                 points[i].update({"e":True})
 
