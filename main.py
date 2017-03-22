@@ -58,6 +58,7 @@ def dashboard():
     nicks = []
     weeks = []
     glowsticks = []
+    team_scores_to_sort = []
     all_week_end_dates = set()
     for (nick, d) in scoreboard:
         nicks.append({"v":nick,"e":nick == this_nick})
@@ -81,6 +82,10 @@ def dashboard():
                 points[i].update({"e":True})
 
         weeks.append({"date":str(week_end_date), "points":points})
+        team_scores_to_sort.append((
+            -sum(points_num),
+            {"date":str(week_end_date), "points":str(sum(points_num))}
+            ))
 
     # Set emphasis on the glowsticks
     if len(nicks) > 0:
@@ -88,6 +93,12 @@ def dashboard():
         for d in glowsticks:
             if d["v"] == winning_glowsticks:
                 d["e"] = True
+
+
+    # Sort team scores in descending order (hence the minus when creating the
+    # list)
+    team_scores_to_sort.sort()
+    team_scores = [score for (_, score) in team_scores_to_sort]
 
     return render_template(
             "dashboard.html",
@@ -97,7 +108,8 @@ def dashboard():
             week_points=str(week_points),
             nicks=nicks,
             glowsticks=glowsticks,
-            weeks=weeks)
+            weeks=weeks,
+            team_scores=team_scores)
 
 @app.route('/record', methods=['GET'])
 def record():

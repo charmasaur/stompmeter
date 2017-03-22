@@ -69,6 +69,20 @@
       </tr>
       {% endfor %}
     </table>
+    <br><br>
+    And more finally, some team records:
+    <table>
+      <tr>
+        <td></td>
+        <td>Total team points</td>
+      </tr>
+      {% for team_score in team_scores %}
+      <tr>
+        <td>{{team_score['date']}}</td>
+        <td>{{team_score['points']}}</td>
+      </tr>
+      {% endfor %}
+    </table>
     <form action=signup method=get enctype=multipart/form-data>
       <input type="submit" value="Change nickname"/>
     </form>
