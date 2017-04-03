@@ -5,7 +5,7 @@
     hours spent doing each thing. Note that points from the session you enter here will add to what you've previously submitted for
     the day, not replace it*!
     <form action=set_record method=post enctype=multipart/form-data>
-      Date: <input type="date" name="date" min="2017-03-07"/><br>
+      Date: <input id="date" type="date" name="date" min="2017-03-07"/><br>
       Standing: <input type="number" name="standing" step=0.01 value=0 /><br>
       Walking: <input type="number" name="walking" step=0.01 value=0 /><br>
       Running: <input type="number" name="running" step=0.01 value=0 /><br>
@@ -14,6 +14,19 @@
       Stretching: <input type="number" name="stretching" step=0.01 value=0 /><br>
       <input type="submit" value="Submit!"/>
     </form>
+    <script type="text/javascript">
+      function pad_int(x) {
+        return x < 10 ? "0" + x : x;
+      }
+      function get_date_string() {
+        date = new Date();
+        D = pad_int(date.getDate());
+        M = pad_int(date.getMonth()+1);
+        Y = date.getFullYear();
+        return Y + "-" + M + "-" + D;
+      }
+      document.getElementById("date").value = get_date_string()
+    </script>
     <br><br>
     *But individual durations for each activity won't add. For example, if you submit 1 hour of standing and 0 hours of cycling,
     then submit 1 hour of cycling and 0 hours of standing, you won't get any points at all :(
