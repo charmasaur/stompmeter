@@ -60,6 +60,7 @@ def dashboard():
     glowsticks = []
     team_scores_to_sort = []
     all_week_end_dates = set()
+    team_victorweeks = 0
     for (nick, d) in scoreboard:
         nicks.append({"v":nick,"e":nick == this_nick})
         glowsticks.append({"v":0,"e":False})
@@ -74,10 +75,11 @@ def dashboard():
 
         # Update the total glowsticks, and while we're there set any necessary
         # emphasis on the points
-        is_team_victorweek = points_calculator.is_team_victorweek(points_num)
+        if points_calculator.is_team_victorweek(points_num):
+            team_victorweeks += 1
         winning_score = max(points_num)
         for (i, p) in enumerate(points_num):
-            if p == winning_score or is_team_victorweek:
+            if p == winning_score:
                 glowsticks[i]["v"] += 1
                 points[i].update({"e":True})
 
@@ -109,7 +111,8 @@ def dashboard():
             nicks=nicks,
             glowsticks=glowsticks,
             weeks=weeks,
-            team_scores=team_scores)
+            team_scores=team_scores,
+            team_victorweeks=team_victorweeks)
 
 @app.route('/record', methods=['GET'])
 def record():
