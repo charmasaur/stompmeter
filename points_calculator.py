@@ -1,3 +1,5 @@
+import datetime
+
 def calculate(
         standing,
         walking,
@@ -11,5 +13,9 @@ def calculate(
 
     return training_points
 
-def is_team_victorweek(team_points):
-    return min(team_points) >= 100
+def is_team_victorweek(week_end_date, team_points):
+    # Use threshold of 100 for 16/4/2017 and earlier.
+    if week_end_date <= datetime.date(2017, 4, 16):
+        return min(team_points) >= 100
+    # Otherwise use 140.
+    return min(team_points) >= 140
