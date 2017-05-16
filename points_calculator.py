@@ -10,7 +10,7 @@ def calculate(
     hours_on_feet = standing + walking + running
     hours_exercising = walking + running + cycling + swimming
     stretching_hours = min(stretching,hours_exercising/10)
-    training_points = (min(hours_on_feet, hours_exercising) + stretching) * 10
+    training_points = (min(hours_on_feet, hours_exercising) + stretching_hours) * 10
 
     return training_points
 
