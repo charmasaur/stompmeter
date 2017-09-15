@@ -176,9 +176,15 @@ def set_record():
         return render_template("set_record_fail.html",
                 msg="Points failed. This really shouldn't have happened.")
 
-    return render_template("set_record.html",
-            msg="On " + str(date) + " you earned " + str(total_daily_points) +
-                    " points, woah!")
+    msg = ("On " + str(date) + " you earned " + str(total_daily_points) +
+           " points, woah!")
+    if (date >= datetime.date(2017, 9, 15)
+            and date <= datetime.date(2017, 9, 21)):
+        msg += " But what's wrong with you?! You should be tapering!"
+    if (date >= datetime.date(2017, 9, 24)
+            and date <= datetime.date(2017, 9, 29)):
+        msg += " But what's wrong with you!? You should be recovering!"
+    return render_template("set_record.html", msg=msg)
 
 @app.route('/set_nick', methods=['GET'])
 def set_nick():
