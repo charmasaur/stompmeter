@@ -168,8 +168,16 @@ def set_record():
     cycling = get_float_or_zero(raw_data, "cycling")
     swimming = get_float_or_zero(raw_data, "swimming")
     stretching = get_float_or_zero(raw_data, "stretching")
+    eatingcarbs = get_float_or_zero(raw_data, "eatingcarbs")
     points = points_calculator.calculate(
-            standing, walking, running, cycling, swimming, stretching)
+            date,
+            standing,
+            walking,
+            running,
+            cycling,
+            swimming,
+            stretching,
+            eatingcarbs)
 
     success, total_daily_points = user_store.save_points(user, date, points)
     if not success:

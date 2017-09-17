@@ -1,15 +1,21 @@
 import datetime
 
 def calculate(
+        date,
         standing,
         walking,
         running,
         cycling,
         swimming,
-        stretching):
+        stretching,
+        eatingcarbs):
     hours_on_feet = standing + walking + running
     hours_exercising = walking + running + cycling + swimming
     training_points = (min(hours_on_feet, hours_exercising) + stretching) * 10
+
+    # If it's near trailwalker then add the eating points
+    if date >= datetime.date(2017, 9, 18) and date <= datetime.date(2017, 9, 21):
+        training_points += eatingcarbs * 10
 
     return training_points
 
