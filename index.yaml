@@ -20,3 +20,8 @@ indexes:
   properties:
   - name: date
     direction: desc
+
+- kind: UserTrainingWeek
+  ancestor: yes
+  properties:
+  - name: week_end_date

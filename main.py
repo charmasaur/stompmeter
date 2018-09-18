@@ -54,7 +54,8 @@ def dashboard():
                 week_points += points
 
     this_nick = user_store.get_nick(user)
-    scoreboard = user_store.get_scoreboard()
+    # Only get scores from the last year.
+    scoreboard = user_store.get_scoreboard(today_date - datetime.timedelta(365))
     nicks = []
     weeks = []
     glowsticks = []

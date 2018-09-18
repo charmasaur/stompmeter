@@ -89,9 +89,11 @@ def get_recent_points(user, max_results):
 # Returns a list of (nick, d), where d is a dictionary of date to points in the
 # week ending with that date. The dictionary will only be correctly populated
 # for weeks for which snapshot_week_scores has been called.
-def get_scoreboard():
+# min_date is the earliest week end date for which weeks will be fetched
+def get_scoreboard(min_date):
     training_weeks = (UserTrainingWeek
             .query(ancestor=_get_user_parent_key())
+            .filter(UserTrainingWeek.week_end_date >= min_date)
             .fetch())
     result_dict = {}
     for training_week in training_weeks:
