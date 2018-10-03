@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="noti_channel_name">Activities</string>
+    <string name="noti_walking">walked</string>
+    <string name="noti_cycling">cycled</string>
+    <string name="noti_running">ran</string>
+    <string name="noti_unknown">did something</string>
+    <string name="noti_title">You %1$s for %2$s at %3$s</string>
+    <string name="minutes">%1$d minutes</string>
+</resources>
