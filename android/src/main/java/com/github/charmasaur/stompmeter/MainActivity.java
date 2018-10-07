@@ -1,6 +1,7 @@
 package com.github.charmasaur.stompmeter;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -9,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.common.collect.ImmutableList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,6 +99,7 @@ public final class MainActivity extends FragmentActivity {
   private ImmutableList<Entry> entries;
   private ImmutableList<Mergable> mergables;
   private ViewGroup root;
+  private RequestQueue queue;
   private TextView status;
 
   @Override
@@ -137,12 +145,36 @@ public final class MainActivity extends FragmentActivity {
       (TextView) getLayoutInflater().inflate(R.layout.status, root, /* attachToRoot= */ false);
     root.addView(status);
 
+    queue = Volley.newRequestQueue(this);
+
     handleIntent(getIntent());
   }
 
   @Override
   protected void onNewIntent(Intent intent) {
     handleIntent(intent);
+  }
+
+  private void submit() {
+    Uri.Builder uriBuilder = new Uri.Builder()
+        .scheme("http")
+        .authority("stompmeter.appspot.com")
+        .path("set_record");
+    StringRequest stringRequest = new StringRequest(
+        Request.Method.POST,
+        uriBuilder.build().toString(),
+        successResponse -> status.setText(successResponse),
+        volleyError -> status.setText("Error: " + volleyError)) {
+          @Override
+          protected Map<String, String> getParams() {
+            Map<String, String> params = new HashMap<String, String>();
+            for (Entry entry : entries) {
+              params.put(entry.getKey(), entry.getValue());
+            }
+            return params;
+          }
+        };
+    queue.add(stringRequest);
   }
 
   private void handleIntent(Intent intent) {
