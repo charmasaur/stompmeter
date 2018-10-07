@@ -7,4 +7,6 @@
     <string name="noti_unknown">did something</string>
     <string name="noti_title">You %1$s for %2$s at %3$s</string>
     <string name="minutes">%1$d minutes</string>
+
+    <string name="submit">Submit</string>
 </resources>
