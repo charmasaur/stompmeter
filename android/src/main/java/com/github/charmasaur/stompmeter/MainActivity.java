@@ -141,9 +141,10 @@ public final class MainActivity extends FragmentActivity {
     button.setOnClickListener(view -> submit());
     root.addView(button);
 
-    status =
-      (TextView) getLayoutInflater().inflate(R.layout.status, root, /* attachToRoot= */ false);
-    root.addView(status);
+    View statusView =
+      getLayoutInflater().inflate(R.layout.status, root, /* attachToRoot= */ false);
+    status = (TextView) statusView.findViewById(R.id.text);
+    root.addView(statusView);
 
     queue = Volley.newRequestQueue(this);
 
