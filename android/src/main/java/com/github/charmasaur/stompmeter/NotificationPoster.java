@@ -51,7 +51,11 @@ public final class NotificationPoster {
                     getStartTime(startTimestampMs)))
             .setSmallIcon(android.R.drawable.ic_menu_mylocation)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, 0))
+            .setAutoCancel(true)
+            .setContentIntent(
+                // Use FLAG_ONE_SHOT to make sure PendingIntents with different extras aren't
+                // reused.
+                PendingIntent.getActivity(context, 0, contentIntent, PendingIntent.FLAG_ONE_SHOT))
             .build());
 
   }
