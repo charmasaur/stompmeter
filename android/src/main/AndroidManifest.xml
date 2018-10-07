@@ -7,8 +7,11 @@
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <uses-permission android:name="android.permission.INTERNET" />
 
+
   <application
     android:label="Stompmeter">
+
+    <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
     <activity
       android:name=".MainActivity"

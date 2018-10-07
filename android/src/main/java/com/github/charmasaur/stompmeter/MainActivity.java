@@ -157,7 +157,7 @@ public final class MainActivity extends FragmentActivity {
 
   private void submit() {
     Uri.Builder uriBuilder = new Uri.Builder()
-        .scheme("http")
+        .scheme("https")
         .authority("stompmeter.appspot.com")
         .path("set_record");
     StringRequest stringRequest = new StringRequest(
