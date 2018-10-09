@@ -56,7 +56,7 @@ def is_team_victorweek(week_end_date, team_points):
     if week_end_date <= datetime.date(2017, 9, 10):
         return min(team_points) >= 130
     # Use threshold of 140 for 31/12/2017 and earlier.
-    if week_end_date <= datetime.date(2017, 31, 12):
+    if week_end_date <= datetime.date(2017, 12, 31):
         return min(team_points) >= 140
 
     # Otherwise use 100.
